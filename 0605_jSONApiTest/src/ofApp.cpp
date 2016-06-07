@@ -3,12 +3,13 @@
 
 void ofApp::setup()
 {
+    _str = "";
     accessAPI(ofRandom(136.7, 140), ofRandom(35.7, 36.7));
 }
 
 void ofApp::accessAPI(float lon, float lat)
 {
-    std::string url = "http://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?";
+    string url = "http://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?";
     
     float longitute = lon;
     float latitude = lat;
@@ -23,6 +24,8 @@ void ofApp::accessAPI(float lon, float lat)
     if (parsingSuccessful)
     {
         ofLogNotice("ofApp::setup") << result.getRawString();
+        _str += ofToString(result["elevation"].asFloat());
+        _str += "\n";
     }
     else
     {
@@ -40,8 +43,10 @@ void ofApp::draw()
     
     ofSetHexColor(0x00FF00);
     
-    ofDrawBitmapString(result["elevation"].asFloat(), 20,20);
-    ofDrawBitmapString(result["hsrc"].asString(), 20, 40);
+//    ofDrawBitmapString(result["elevation"].asFloat(), 20,20);
+//    ofDrawBitmapString(result["hsrc"].asString(), 20, 40);
+    
+    ofDrawBitmapString(_str, 10, 10);
     
 //    if (result.isMember("elevation"))
 //    {
@@ -60,8 +65,18 @@ void ofApp::draw()
 }
 
 void ofApp::keyPressed(int key){
+    if(key == 'c')
+    {
+        _str = "";
+        return;
+    }
+    
     if(key != OF_KEY_ESC)
     {
-        accessAPI(ofRandom(136.7, 140), ofRandom(35.7, 36.7));
+        for(int i=0; i<10; i++)
+        {
+            accessAPI(ofRandom(136.7, 140), ofRandom(35.7, 36.7));
+        }
     }
+    
 }

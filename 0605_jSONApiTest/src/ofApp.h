@@ -17,4 +17,6 @@ public:
     
     ofxJSONElement result;
     
+    string _str;
+    
 };
